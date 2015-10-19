@@ -1,4 +1,4 @@
-﻿<!DOCTYPE>
+<!DOCTYPE html>
 <html>
 	<head>
 		<meta charset="utf-8">
@@ -6,8 +6,90 @@
 		<link href="/css/style.css" rel="stylesheet" media="all">
 	</head>
 	<body>
-		<div class="logo">
-			<img src="/images/refal2.png" />
+		<div class="main-layout">
+			<div class="logo">
+				<img src="/images/refal2.png" />
+			</div>
+			<div class="links-line">
+				<a href="refal2.exe" target="_blank">Загрузить refal2.exe</a>&nbsp;&nbsp;
+				<a href="https://github.com/cmc-msu-ai/refal" target="_blank">Исходный код и инструкция по сборке</a>
+			</div>
+			<div class="line"></div>
+			<div class="content">
+				<p>Для использования интерпретатора на операционных системах семейства Windows достаточно загрузить файл
+					<a href="refal2.exe" target="_blank">refal2.exe</a>.</p>
+
+				<p>Запуск интерпретатора осуществляется посредством командной строки.
+					Для отображения списка доступных аргументов следует использовать команду:<br>
+					<code><span>&nbsp;&nbsp;&nbsp;&nbsp;C:\...&gt; </span>refal2 --help</code></p>
+				<p>Запуск интерпретатора <b>без аргументов</b> означает, что исходный текст программы будет читаться со
+					<b>стандартного ввода (<code>stdin</code>)</b>. Такое поведение является стандартным для большинства консольных утилит.
+					Все сообщения об ошибках выдаются на <b>стандартный поток ошибок (<code>stderr</code>)</b>.</p>
+
+				<div class="line"></div>
+
+				<p>По всем возникшим вопросам относительно сборки или использования можно писать на почту
+					<a href="mailto:refal2@yandex.ru">refal2@yandex.ru</a>
+					или в контакт <a href="http://vk.com/id13476570" target="_blank">Антону Тодуа</a> (более быстрый способ).</p>
+
+				<p><b>Огромная</b> просьба в случае выявления <b>любых ошибок в интерпретаторе</b> незамедлительно связываться с автором одним из вышеуказанных способов.
+					В своём обращении указать <b>суть ошибки</b> и приложить <b>исходный текст программы</b> на котором она повторяется.
+					Если вы не уверены где ошибка &ndash; в интерпретаторе или программе,
+					можно воспользоваться одним из предшествующих интерпретаторов
+					(правда в них также есть ошибки).</p>
+
+				<div class="line"></div>
+
+				<p>Возможен запуск программы, состоящей из нескольких модулей, связь между которыми осуществляется посредством объявлений
+					<code>entry</code> и <code>extrn</code>, например:</p>
+
+				<table cellspacing="0" cellpadding="0">
+					<tr>
+						<td>Файл <code>module1.ref</code></td>
+						<td>Файл <code>module2.ref</code></td>
+					</tr>
+					<tr>
+						<td><pre style="width: 260px; overflow:hidden;">
+<span>* Текст модуля 1</span>
+    entry go
+    extrn hello
+
+go = &lt;hello&gt;</pre></td>
+						<td><pre><span>* Текст модуля 2</span>
+    entry hello
+    extrn print
+
+hello = &lt;print 'Hello, world!'&gt;</pre></td>
+					</tr>
+				</table>
+
+				<p>Запуск программы будет осуществляется следующим образом:<br/>
+					<code><span>&nbsp;&nbsp;&nbsp;&nbsp;C:\...&gt; </span>refal2 module1.ref module2.ref</code></p>
+
+				<p>Несколько модулей также могут располагаться в одном файле,
+					тогда требуется явное указание директив <code>start</code> и <code>end</code>,
+					в остальных случаях указание этих директив является допустимым, но не обязательным.</p>
+
+				<div class="line"></div>
+
+				<p>Если Вы решили собрать интерпретатор из исходного кода, следует воспользоваться
+					<a href="https://github.com/cmc-msu-ai/refal" target="_blank">инструкцией</a>.
+					Для сборки необходимы компилятор языка <code>C++</code> с поддержкой стандарта <code>C++11</code>.</p>
+
+				<p>Теоретически можно попробовать собрать интерпретатор компилятором без поддержки <code>C++11</code>.
+					Для этого надо выполнить следующие действия:</p>
+
+				<ul>
+					<li>Заменить <code>std::unique_ptr</code> на <code>std::shared_ptr</code></li>
+					<li>Заменить <code>nullptr</code> на <code>0</code></li>
+					<li>Выразить <code>std::bitset<N>::all()</code> через <code>std::bitset<N>::any()</code>,<br>
+						например так: <code>!(~mybitset).any()</code></li>
+				</ul>
+
+				<p>Также при сборке из исходного кода следует убедиться, что символы препроцессора <code>DEBUG</code> и <code>_DEBUG</code> не определены.
+					Другими словами интерпретатор должен быть собран в конфигурации <code>release</code>.</p>
+			</div>
 		</div>
+		<div class="copyright">2015 &copy; Made by <a href="http://vk.com/id13476570">Anton Todua</a></div>
 	</body>
 </html>
